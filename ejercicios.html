@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoviVital - Ejercicios</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        header {
+            background-color: #4a4aff;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .container {
+            padding: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .seccion-ejercicios h2 {
+            margin-bottom: 0.8rem;
+            text-align: center;
+            color: black; 
+            font-size: 1.8rem; 
+            font-weight: bold;
+            padding: 1rem 0;
+        }
+        .boton-ejercicio {
+            background-color: #4a4aff;
+            border: none;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            display: block;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .boton-ejercicio:hover {
+            background-color: #3a3abf;
+        }
+        .btn-volver {
+            background-color: #4a4aff;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block; 
+            margin: 1.5rem auto;
+        }
+        .btn-volver:hover {
+            background-color: #3a3abf;
+        }
+    </style>
+</head>
+<body>
+    <header>Biblioteca de Ejercicios</header>
+    <div class="container">
+        <div class="seccion-ejercicios">
+            <h2>Elige tu ejercicio</h2>
+            
+            <button class="boton-ejercicio"  onclick="incrementExerciseCount(); window.open('https://www.youtube.com/watch?v=e81CZLxcBUY&t=12s&ab_channel=MarianaQuevedo%7CFisioterapiaQuer%C3%A9taro')">
+                Ejercicios de Rodilla
+            </button>
+            
+            <button class="boton-ejercicio"  onclick="incrementExerciseCount(); window.open('https://www.youtube.com/watch?v=p_5EvPu0Gtw&t=9s&ab_channel=MarianaQuevedo%7CFisioterapiaQuer%C3%A9taro')">
+                Ejercicios de Rodilla con Silla
+            </button>
+            
+            <button class="boton-ejercicio"  onclick="incrementExerciseCount(); window.open('https://www.youtube.com/watch?v=MM93dCTulM0&t=20s&ab_channel=MarianaQuevedo%7CFisioterapiaQuer%C3%A9taro')">
+                Ejercicios de Rodilla Acostado
+            </button>
+
+            <button class="boton-ejercicio"  onclick="incrementExerciseCount(); window.open('https://www.youtube.com/watch?v=gkZkVNy_Hos&t=17s&ab_channel=MarianaQuevedo%7CFisioterapiaQuer%C3%A9taro')">
+                Ejercicios de Rodilla y Cadera
+            </button>
+            <button class="btn-volver" onclick="window.history.back()">Volver a la App</button>
+            </div>
+    </div>
+    <script>
+        
+        function incrementExerciseCount() {
+            let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 25);
+            exerciseCount++;
+            localStorage.setItem('movivital_exercise_count', exerciseCount);
+            console.log('Exercise count incremented:', exerciseCount); 
+        }
+    </script>
+</body>
+</html>
