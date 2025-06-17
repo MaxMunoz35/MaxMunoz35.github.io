@@ -146,16 +146,20 @@
         <h3>Elige tu mascota</h3>
         <div id="mascot-selector" class="selector-mascotas">
             <div class="mascota-item">
-                <img src="Mascota_i.png" alt="Mascota 1" onclick="elegirMascota('Mascota_i.png')">
+                <img src="Mascota_i.png" alt="Mascota 1" data-filename="Mascota_i.png" onclick="elegirMascota(this)">
+                <p>Mascota_i.png</p>
             </div>
             <div class="mascota-item">
-                <img src="mascota_o.png" alt="Mascota 2" onclick="elegirMascota('mascota_o.png')">
+                <img src="mascota_o.png" alt="Mascota 2" data-filename="mascota_o.png" onclick="elegirMascota(this)">
+                <p>mascota_o.png</p>
             </div>
             <div class="mascota-item">
-                <img src="mascota_k.png" alt="Mascota 3" onclick="elegirMascota('mascota_k.png')">
+                <img src="mascota_k.png" alt="Mascota 3" data-filename="mascota_k.png" onclick="elegirMascota(this)">
+                <p>mascota_k.png</p>
             </div>
             <div class="mascota-item">
-                <img src="mascota_c.png" alt="Mascota 4" onclick="elegirMascota('mascota_c.png')">
+                <img src="mascota_c.png" alt="Mascota 4" data-filename="mascota_c.png" onclick="elegirMascota(this)">
+                <p>mascota_c.png</p>
             </div>
         </div>
         <div class="input-nombre">
@@ -164,8 +168,8 @@
     </div>
 
     <div class="mascot-display">
-        <h2>¡Hola, <span id="mascot-name">mascota_c.png</span>!</h2>
-        <img id="mascot-image" src="img/mascota1.png" alt="Tu Mascota">
+        <h2>¡Hola, <span id="mascot-name"></span>!</h2>
+        <img id="mascot-image" src="" alt="Tu Mascota">
         <p id="mascot-message">Sigue ejercitándote para ayudarla a crecer.</p>
     </div>
 
@@ -194,8 +198,8 @@
 
     function updateMascotAndProgress() {
         let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-        let selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota1.png';
-        let customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
+        let selectedMascotFileName = localStorage.getItem('movivital_mascot') || 'mascota_c.png'; // Default to a pet
+        let customName = localStorage.getItem('movivital_mascot_name') || selectedMascotFileName.split('.')[0]; // Use filename as default name
 
         document.getElementById('mascot-name').textContent = customName;
         document.getElementById('exercise-count-display').textContent = exerciseCount;
@@ -214,15 +218,46 @@
                 break;
             }
         }
-        document.getElementById('mascot-image').src = currentStage.image;
-        document.getElementById('mascot-message').textContent = currentStage.message;
+        
+        // This is the key change: first display the selected mascot
+        document.getElementById('mascot-image').src = selectedMascotFileName; 
 
+        // Then, if the exercise count reaches a stage threshold, override with the stage image
+        if (exerciseCount >= currentStage.threshold) {
+            document.getElementById('mascot-image').src = currentStage.image;
+        }
+
+        document.getElementById('mascot-message').textContent = currentStage.message;
         document.getElementById('mascot-custom-name').value = customName;
+
+        // Highlight the selected mascot in the selector
+        document.querySelectorAll('.selector-mascotas img').forEach(img => {
+            img.classList.remove('selected');
+            if (img.dataset.filename === selectedMascotFileName) {
+                img.classList.add('selected');
+            }
+        });
     }
 
-    function elegirMascota(mascota) {
-        localStorage.setItem('movivital_mascot', mascota);
-        updateMascotAndProgress();
+    function elegirMascota(selectedImageElement) {
+        // Remove 'selected' class from all images
+        document.querySelectorAll('.selector-mascotas img').forEach(img => {
+            img.classList.remove('selected');
+        });
+
+        // Add 'selected' class to the clicked image
+        selectedImageElement.classList.add('selected');
+
+        const mascotFileName = selectedImageElement.dataset.filename;
+        localStorage.setItem('movivital_mascot', mascotFileName);
+        
+        // Also set the custom name input to the selected mascot's filename if no custom name is set
+        if (!localStorage.getItem('movivital_mascot_name')) {
+            document.getElementById('mascot-custom-name').value = mascotFileName.split('.')[0];
+            localStorage.setItem('movivital_mascot_name', mascotFileName.split('.')[0]);
+        }
+        
+        updateMascotAndProgress(); // Update the main display
     }
 
     function guardarNombreMascota() {
@@ -233,6 +268,12 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mascot-selector-box').style.display = 'block';
+        
+        // Initialize with a default pet if none is selected
+        if (!localStorage.getItem('movivital_mascot')) {
+            localStorage.setItem('movivital_mascot', 'mascota_c.png'); // Set a default pet
+        }
+        
         updateMascotAndProgress();
     });
 </script>
