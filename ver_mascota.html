@@ -220,7 +220,7 @@
         }
         
         // This is the key change: first display the selected mascot
-        document.getElementById('mascot-image').src = selectedMascotFileName; 
+       const mascotImageElement = document.getElementById('mascot-image');
 
         // Then, if the exercise count reaches a stage threshold, override with the stage image
         if (exerciseCount >= currentStage.threshold) {
