@@ -187,11 +187,11 @@
 </div>
 
 <script>
-    <script>
     const MAX_EXERCISES = 10;
 
     // Define las etapas de evolución de la mascota
-    // Asegúrate de que estas imágenes estén en la ruta correcta, por ejemplo, 'img/mascota_stage1.png'
+    // IMPORTANT: Ensure these paths are correct relative to your HTML file
+    // If your "stage" images are in an 'img' folder, keep 'img/'
     const mascotStages = [
         { threshold: 0, image: 'img/mascota_stage1.png', message: '¡Tu mascota es un retoño! Sigue ejercitándote para que crezca fuerte.' },
         { threshold: 3, image: 'img/mascota_stage2.png', message: '¡Tu mascota está en crecimiento! ¡Vamos por más ejercicios!' },
@@ -201,16 +201,26 @@
 
     function updateMascotAndProgress() {
         let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-        // Obtiene la mascota seleccionada, o un valor por defecto si no hay ninguna
-        let selectedMascotFileName = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
-        // Obtiene el nombre personalizado, o el nombre del archivo de la mascota seleccionada como por defecto
-        let customName = localStorage.getItem('movivital_mascot_name') || selectedMascotFileName.split('.')[0];
+        let selectedMascotFileName = localStorage.getItem('movivital_mascot'); // Get the stored selected mascot filename
+        let customName = localStorage.getItem('movivital_mascot_name'); // Get the stored custom name
 
-        // Actualiza el nombre de la mascota y el contador de ejercicios
+        // --- FIX: Ensure a default selectedMascotFileName if none is stored ---
+        if (!selectedMascotFileName) {
+            selectedMascotFileName = 'mascota_c.png'; // Default if nothing chosen yet
+            localStorage.setItem('movivital_mascot', selectedMascotFileName); // Store default
+        }
+
+        // --- FIX: Default name logic refined ---
+        // If no custom name is set, use the filename as default name (without extension)
+        if (!customName || customName.trim() === '') {
+            customName = selectedMascotFileName.split('.')[0];
+            localStorage.setItem('movivital_mascot_name', customName); // Store this default name
+        }
+
         document.getElementById('mascot-name').textContent = customName;
         document.getElementById('exercise-count-display').textContent = exerciseCount;
 
-        // Calcula y actualiza la barra de progreso
+        // Calculate and update progress bar
         let progressPercentage = (exerciseCount / MAX_EXERCISES) * 100;
         if (progressPercentage > 100) progressPercentage = 100;
 
@@ -218,7 +228,7 @@
         progressBar.style.width = progressPercentage + '%';
         progressBar.textContent = Math.round(progressPercentage) + '%';
 
-        // Determina la etapa actual de evolución basada en el progreso de ejercicios
+        // Determine current evolution stage based on exercise progress
         let currentStage = mascotStages[0];
         for (let i = mascotStages.length - 1; i >= 0; i--) {
             if (exerciseCount >= mascotStages[i].threshold) {
@@ -227,33 +237,45 @@
             }
         }
         
-        // --- CAMBIO CLAVE AQUÍ ---
-        // La imagen principal DEBE ser la mascota seleccionada por el usuario
-        // a menos que el contador de ejercicios haya superado el umbral para una etapa de evolución.
-        
         const mascotImageElement = document.getElementById('mascot-image');
-        
-        // Por defecto, muestra la mascota que el usuario ha seleccionado.
-        mascotImageElement.src = selectedMascotFileName; 
+        let imageToDisplay = selectedMascotFileName; // Start with the user's selected mascot
 
-        // Si el número de ejercicios es suficiente para una etapa de evolución
-        // Y la imagen de la etapa es diferente a la mascota seleccionada, entonces
-        // la mascota evoluciona visualmente.
-        // Se compara solo el nombre del archivo para evitar problemas con rutas completas.
-        const selectedMascotBaseName = selectedMascotFileName.substring(selectedMascotFileName.lastIndexOf('/') + 1);
-        const currentStageBaseName = currentStage.image.substring(currentStage.image.lastIndexOf('/') + 1);
+        // Extract just the filename for comparison (e.g., "Mascota_i.png" from "path/to/Mascota_i.png")
+        const getFileNameFromPath = (path) => path.substring(path.lastIndexOf('/') + 1);
 
+        const selectedMascotBaseName = getFileNameFromPath(selectedMascotFileName);
+        const currentStageBaseName = getFileNameFromPath(currentStage.image);
+
+        // --- CRITICAL FIX FOR IMAGE DISPLAY LOGIC ---
+        // The image should be the selected one, UNLESS the exercise count mandates an evolution
+        // AND the selected base image is NOT the same as the current stage image.
+        // This means if you select 'Mascota_i.png' and stage1 is 'mascota_stage1.png',
+        // and you're at threshold 0, it will display 'Mascota_i.png'.
+        // It only changes if exerciseCount >= currentStage.threshold AND the filenames differ.
         if (exerciseCount >= currentStage.threshold && selectedMascotBaseName !== currentStageBaseName) {
-            mascotImageElement.src = currentStage.image;
+            imageToDisplay = currentStage.image;
+        } else if (exerciseCount >= currentStage.threshold && selectedMascotBaseName === currentStageBaseName) {
+            // If the selected mascot IS one of the stage mascots and you've reached that stage,
+            // then display the stage mascot (this handles cases where a user might select
+            // one of the evolution images as their base mascot).
+            imageToDisplay = currentStage.image;
+        } else {
+            // If exercise count is below the first threshold (0), or not at an evolution stage,
+            // always show the user's selected base mascot.
+            imageToDisplay = selectedMascotFileName;
         }
 
-        // Actualiza el mensaje de la mascota
+
+        // Set the actual image source
+        mascotImageElement.src = imageToDisplay; 
+
+        // Update the mascot message based on the current stage
         document.getElementById('mascot-message').textContent = currentStage.message;
 
-        // Sincroniza el input del nombre personalizado
+        // Synchronize the custom name input field
         document.getElementById('mascot-custom-name').value = customName;
 
-        // Resalta la mascota seleccionada en el selector
+        // Highlight the selected mascot in the selector
         document.querySelectorAll('.selector-mascotas img').forEach(img => {
             img.classList.remove('selected');
             if (img.dataset.filename === selectedMascotFileName) {
@@ -263,49 +285,43 @@
     }
 
     function elegirMascota(selectedImageElement) {
-        // Remueve la clase 'selected' de todas las imágenes en el selector
+        // Remove 'selected' class from all images
         document.querySelectorAll('.selector-mascotas img').forEach(img => {
             img.classList.remove('selected');
         });
 
-        // Agrega la clase 'selected' a la imagen clickeada
+        // Add 'selected' class to the clicked image
         selectedImageElement.classList.add('selected');
 
         const mascotFileName = selectedImageElement.dataset.filename;
         localStorage.setItem('movivital_mascot', mascotFileName);
         
-        // Actualiza el nombre personalizado solo si no se ha establecido uno previamente
-        // o si el nombre actual es el nombre por defecto del archivo de la mascota anterior
-        if (!localStorage.getItem('movivital_mascot_name') || 
-            localStorage.getItem('movivital_mascot_name') === document.getElementById('mascot-name').textContent ||
-            document.getElementById('mascot-custom-name').value === '') { 
-            const defaultName = mascotFileName.split('.')[0];
-            document.getElementById('mascot-custom-name').value = defaultName;
-            localStorage.setItem('movivital_mascot_name', defaultName);
+        // --- FIX: Default name logic when choosing a new mascot ---
+        // Only update the custom name input if it was previously empty or was the old default filename
+        let currentCustomName = localStorage.getItem('movivital_mascot_name');
+        let newDefaultName = mascotFileName.split('.')[0];
+
+        if (!currentCustomName || currentCustomName.trim() === '' || currentCustomName === document.getElementById('mascot-name').textContent) {
+            document.getElementById('mascot-custom-name').value = newDefaultName;
+            localStorage.setItem('movivital_mascot_name', newDefaultName);
         }
         
-        // Llama a la función para actualizar la pantalla principal con la nueva selección
-        updateMascotAndProgress(); 
+        updateMascotAndProgress(); // Update the main display
     }
 
     function guardarNombreMascota() {
         const nombre = document.getElementById('mascot-custom-name').value;
         localStorage.setItem('movivital_mascot_name', nombre);
+        // Update the displayed name immediately
         document.getElementById('mascot-name').textContent = nombre;
     }
 
-    // Se ejecuta cuando el DOM está completamente cargado
+    // This runs when the page loads
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mascot-selector-box').style.display = 'block';
         
-        // Establece una mascota por defecto si es la primera vez que se carga la página
-        if (!localStorage.getItem('movivital_mascot')) {
-            localStorage.setItem('movivital_mascot', 'mascota_c.png'); 
-        }
-        
-        updateMascotAndProgress(); // Carga la mascota y el progreso inicial
+        // Ensure initial setup even if localStorage is empty
+        // updateMascotAndProgress will handle setting a default if needed
+        updateMascotAndProgress(); 
     });
 </script>
-</script>
-</body>
-</html>
