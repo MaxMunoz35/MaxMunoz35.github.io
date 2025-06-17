@@ -187,6 +187,7 @@
 </div>
 
 <script>
+    <script>
     const MAX_EXERCISES = 10;
 
     const mascotStages = [
@@ -198,7 +199,7 @@
 
     function updateMascotAndProgress() {
         let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-        let selectedMascotFileName = localStorage.getItem('movivital_mascot') || 'mascota_c.png'; // Default to a pet
+        let selectedMascotFileName = localStorage.getItem('movivital_mascot') || 'mascota_c.png'; // Default to a pet if none selected
         let customName = localStorage.getItem('movivital_mascot_name') || selectedMascotFileName.split('.')[0]; // Use filename as default name
 
         document.getElementById('mascot-name').textContent = customName;
@@ -219,10 +220,28 @@
             }
         }
         
-        // This is the key change: first display the selected mascot
+        // **CRITICAL CHANGE HERE:**
+        // Set the mascot image based on the selected mascot first
         document.getElementById('mascot-image').src = selectedMascotFileName; 
 
-        // Then, if the exercise count reaches a stage threshold, override with the stage image
+        // ONLY if the exercise count meets a stage threshold AND
+        // the selected mascot is NOT one of the stage images,
+        // THEN display the stage image.
+        // This ensures the selected pet is shown unless it truly evolves.
+        const currentMascotSrc = document.getElementById('mascot-image').src;
+        const currentMascotBaseName = currentMascotSrc.substring(currentMascotSrc.lastIndexOf('/') + 1);
+
+        // Check if the current exercise count warrants an evolution AND
+        // if the currently displayed image is NOT already an evolution stage image.
+        // This prevents the chosen initial image from being overwritten until an evolution is met.
+        let shouldEvolve = false;
+        for (const stage of mascotStages) {
+            if (exerciseCount >= stage.threshold && currentMascotBaseName !== stage.image.substring(stage.image.lastIndexOf('/') + 1)) {
+                shouldEvolve = true;
+                break;
+            }
+        }
+
         if (exerciseCount >= currentStage.threshold) {
             document.getElementById('mascot-image').src = currentStage.image;
         }
@@ -251,10 +270,14 @@
         const mascotFileName = selectedImageElement.dataset.filename;
         localStorage.setItem('movivital_mascot', mascotFileName);
         
-        // Also set the custom name input to the selected mascot's filename if no custom name is set
-        if (!localStorage.getItem('movivital_mascot_name')) {
-            document.getElementById('mascot-custom-name').value = mascotFileName.split('.')[0];
-            localStorage.setItem('movivital_mascot_name', mascotFileName.split('.')[0]);
+        // Set the custom name input to the selected mascot's filename if no custom name is set
+        // Or if the existing custom name is still the old default filename
+        if (!localStorage.getItem('movivital_mascot_name') || 
+            localStorage.getItem('movivital_mascot_name') === document.getElementById('mascot-name').textContent ||
+            document.getElementById('mascot-custom-name').value === '') { // Also reset if input is empty
+            const defaultName = mascotFileName.split('.')[0];
+            document.getElementById('mascot-custom-name').value = defaultName;
+            localStorage.setItem('movivital_mascot_name', defaultName);
         }
         
         updateMascotAndProgress(); // Update the main display
@@ -276,6 +299,7 @@
         
         updateMascotAndProgress();
     });
+</script>
 </script>
 </body>
 </html>
