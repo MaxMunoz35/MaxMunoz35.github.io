@@ -108,6 +108,9 @@
             overflow-x: auto;
             gap: 1rem;
         }
+        .selector-mascotas .mascota-item {
+            text-align: center;
+        }
         .selector-mascotas img {
             width: 100px;
             height: auto;
@@ -120,18 +123,34 @@
             border-color: #4a4aff;
             transform: scale(1.1);
         }
+        .selector-mascotas p {
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
 <header>Tu Compañero MoviVital</header>
 <div class="container">
-    <div id="mascot-selector-box" class="selector-mascotas-cuadro" style="display: none;">
+    <div id="mascot-selector-box" class="selector-mascotas-cuadro">
         <h3>Elige tu mascota</h3>
         <div id="mascot-selector" class="selector-mascotas">
-            <img src="Mascota_i.png" alt="Mascota 1" onclick="elegirMascota('Mascota_i.png')">
-            <img src="mascota_o.png" alt="Mascota 2" onclick="elegirMascota('mascota_o.png')">
-            <img src="mascota_k.png" alt="Mascota 3" onclick="elegirMascota('mascota_k.png')">
-            <img src="mascota_c.png" alt="Mascota 4" onclick="elegirMascota('mascota_c.png')">
+            <div class="mascota-item">
+                <img src="Mascota_i.png" alt="Mascota 1" onclick="elegirMascota('Mascota_i.png')">
+                <p>mascota1.png</p>
+            </div>
+            <div class="mascota-item">
+                <img src="mascota_o.png" alt="Mascota 2" onclick="elegirMascota('mascota_o.png')">
+                <p>mascota2.png</p>
+            </div>
+            <div class="mascota-item">
+                <img src="mascota_k.png" alt="Mascota 3" onclick="elegirMascota('mascota_k.png')">
+                <p>mascota3.png</p>
+            </div>
+            <div class="mascota-item">
+                <img src="mascota_c.png" alt="Mascota 4" onclick="elegirMascota('mascota_c.png')">
+                <p>mascota4.png</p>
+            </div>
         </div>
     </div>
 
@@ -168,9 +187,9 @@
         let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
         let selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota1.png';
 
-        document.getElementById('mascot-image').src = 'img/' + selectedMascot;
-
+        document.getElementById('mascot-name').textContent = selectedMascot;
         document.getElementById('exercise-count-display').textContent = exerciseCount;
+
         let progressPercentage = (exerciseCount / MAX_EXERCISES) * 100;
         if (progressPercentage > 100) progressPercentage = 100;
 
@@ -191,14 +210,11 @@
 
     function elegirMascota(mascota) {
         localStorage.setItem('movivital_mascot', mascota);
-        document.getElementById('mascot-selector-box').style.display = 'none';
         updateMascotAndProgress();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        if (!localStorage.getItem('movivital_mascot')) {
-            document.getElementById('mascot-selector-box').style.display = 'block';
-        }
+        document.getElementById('mascot-selector-box').style.display = 'block';
         updateMascotAndProgress();
     });
 </script>
