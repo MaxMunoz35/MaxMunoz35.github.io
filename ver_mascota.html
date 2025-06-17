@@ -127,6 +127,16 @@
             margin-top: 0.3rem;
             font-size: 0.85rem;
         }
+        .input-nombre {
+            margin: 1rem 0;
+        }
+        .input-nombre input {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 80%;
+        }
     </style>
 </head>
 <body>
@@ -148,10 +158,13 @@
                 <img src="mascota_c.png" alt="Mascota 4" onclick="elegirMascota('mascota_c.png')">
             </div>
         </div>
+        <div class="input-nombre">
+            <input type="text" id="mascot-custom-name" placeholder="Escribe el nombre de tu mascota" oninput="guardarNombreMascota()">
+        </div>
     </div>
 
     <div class="mascot-display">
-        <h2>¡Hola, <span id="mascot-name">Mascota</span>!</h2>
+        <h2>¡Hola, <span id="mascot-name">mascota_c.png</span>!</h2>
         <img id="mascot-image" src="img/mascota1.png" alt="Tu Mascota">
         <p id="mascot-message">Sigue ejercitándote para ayudarla a crecer.</p>
     </div>
@@ -182,8 +195,9 @@
     function updateMascotAndProgress() {
         let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
         let selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota1.png';
+        let customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
 
-        document.getElementById('mascot-name').textContent = selectedMascot;
+        document.getElementById('mascot-name').textContent = customName;
         document.getElementById('exercise-count-display').textContent = exerciseCount;
 
         let progressPercentage = (exerciseCount / MAX_EXERCISES) * 100;
@@ -202,11 +216,19 @@
         }
         document.getElementById('mascot-image').src = currentStage.image;
         document.getElementById('mascot-message').textContent = currentStage.message;
+
+        document.getElementById('mascot-custom-name').value = customName;
     }
 
     function elegirMascota(mascota) {
         localStorage.setItem('movivital_mascot', mascota);
         updateMascotAndProgress();
+    }
+
+    function guardarNombreMascota() {
+        const nombre = document.getElementById('mascot-custom-name').value;
+        localStorage.setItem('movivital_mascot_name', nombre);
+        document.getElementById('mascot-name').textContent = nombre;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
