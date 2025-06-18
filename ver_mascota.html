@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MoviVital - Tu Mascota</title>
+  <title>Tu Compañero MoviVital</title>
   <style>
     body {
       margin: 0;
@@ -27,9 +27,13 @@
     .container {
       flex-grow: 1;
       padding: 1rem;
-      max-width: 800px;
-      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
     .selector-mascotas-cuadro {
@@ -38,13 +42,26 @@
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       margin-bottom: 2rem;
+      width: 100%;
+      max-width: 90vw;
+    }
+
+    .selector-mascotas-cuadro h3 {
+      margin-bottom: 1rem;
+      color: #4a4aff;
     }
 
     .selector-mascotas {
       display: flex;
       overflow-x: auto;
       gap: 1rem;
-      justify-content: center;
+      scroll-snap-type: x mandatory;
+    }
+
+    .mascota-item {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      text-align: center;
     }
 
     .mascota-item img {
@@ -53,25 +70,12 @@
       border: 3px solid transparent;
       border-radius: 10px;
       cursor: pointer;
-      transition: transform 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .mascota-item img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, border 0.2s;
     }
 
     .mascota-item img.selected {
       border-color: #4a4aff;
-      transform: scale(1.15);
-      box-shadow: 0 6px 15px rgba(74, 74, 255, 0.4);
-      animation: bounce 0.4s ease;
-    }
-
-    @keyframes bounce {
-      0% { transform: scale(1.15) translateY(0); }
-      50% { transform: scale(1.25) translateY(-5px); }
-      100% { transform: scale(1.15) translateY(0); }
+      transform: scale(1.1);
     }
 
     .input-nombre {
@@ -86,33 +90,6 @@
       width: 80%;
     }
 
-    .galeria-etapas {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-    }
-
-    .etapa {
-      background-color: #fff;
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 160px;
-    }
-
-    .etapa img {
-      width: 100%;
-      max-height: 130px;
-      object-fit: contain;
-    }
-
-    .etapa p {
-      margin-top: 0.5rem;
-      font-weight: bold;
-      color: #4a4aff;
-    }
-
     .btn-volver {
       background-color: #4a4aff;
       color: white;
@@ -122,7 +99,6 @@
       font-size: 1rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      margin-top: 2rem;
     }
 
     .btn-volver:hover {
@@ -154,71 +130,37 @@
       </div>
     </div>
 
-    <h2 id="mascot-name-title"></h2>
-    <div class="galeria-etapas" id="galeria-etapas"></div>
-
-    <button class="btn-volver" onclick="window.location.href='index.html'">Volver a la App</button>
+    <div class="btn-volver" onclick="window.history.back()">Volver a la App</div>
   </div>
 
   <script>
-    const FASES = 4;
-    const etiquetas = ["Inicio", "Etapa 2", "Etapa 3", "Etapa final"];
+    function elegirMascota(mascota, imgElement) {
+      localStorage.setItem('movivital_mascot', mascota);
+      updateSelection();
+    }
 
     function guardarNombreMascota() {
       const nombre = document.getElementById('mascot-custom-name').value;
       localStorage.setItem('movivital_mascot_name', nombre);
-      document.getElementById('mascot-name-title').textContent = `Evolución de ${nombre}`;
     }
 
-    function elegirMascota(mascota, imgElement) {
-      localStorage.setItem('movivital_mascot', mascota);
-      updateMascotaSeleccionada();
-      renderEtapas();
-    }
-
-    function updateMascotaSeleccionada() {
-      const selectedMascota = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
-      document.querySelectorAll('.selector-mascotas img').forEach(img => {
+    function updateSelection() {
+      const selectedMascot = localStorage.getItem('movivital_mascot');
+      document.querySelectorAll('.mascota-item img').forEach(img => {
         img.classList.remove('selected');
-        if (img.src.includes(selectedMascota)) {
+        if (img.src.includes(selectedMascot)) {
           img.classList.add('selected');
         }
       });
     }
 
-    function renderEtapas() {
-      const contenedor = document.getElementById('galeria-etapas');
-      contenedor.innerHTML = '';
-      const nombreMascota = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
-      const nombreVisible = localStorage.getItem('movivital_mascot_name') || nombreMascota;
-      const prefijo = nombreMascota.replace('.png', '').toLowerCase();
-
-      document.getElementById('mascot-name-title').textContent = `Evolución de ${nombreVisible}`;
-      document.getElementById('mascot-custom-name').value = nombreVisible;
-
-      for (let i = 1; i <= FASES; i++) {
-        const etapa = document.createElement('div');
-        etapa.className = 'etapa';
-
-        const img = document.createElement('img');
-        if (i === 1) {
-          img.src = nombreMascota;
-        } else {
-          img.src = `${prefijo}_stage${i}.png`;
-        }
-
-        const texto = document.createElement('p');
-        texto.textContent = etiquetas[i - 1];
-
-        etapa.appendChild(img);
-        etapa.appendChild(texto);
-        contenedor.appendChild(etapa);
-      }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
-      updateMascotaSeleccionada();
-      renderEtapas();
+      const selected = localStorage.getItem('movivital_mascot');
+      const name = localStorage.getItem('movivital_mascot_name');
+      if (name) {
+        document.getElementById('mascot-custom-name').value = name;
+      }
+      updateSelection();
     });
   </script>
 </body>
