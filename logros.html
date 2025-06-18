@@ -81,7 +81,7 @@
       font-size: 1rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      margin: 1rem auto;
+      margin: 0.5rem;
       display: inline-block;
     }
 
@@ -110,6 +110,7 @@
         Ejercicios completados: <span id="exercise-count">0</span>
       </p>
       <button class="btn" onclick="agregarEjercicios()">Agregar ejercicios manualmente</button>
+      <button class="btn" onclick="reiniciarProgreso()">Reiniciar Progreso</button>
     </div>
 
     <div class="etapa-actual">
@@ -128,14 +129,6 @@
       { threshold: 6, stage: 3 },
       { threshold: 10, stage: 4 }
     ];
-
-    function reiniciarSiPrimeraVez() {
-      const flag = localStorage.getItem('movivital_prueba_reset');
-      if (!flag) {
-        localStorage.setItem('movivital_exercise_count', '0');
-        localStorage.setItem('movivital_prueba_reset', 'true'); // solo la primera vez
-      }
-    }
 
     function actualizarProgreso() {
       let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
@@ -183,10 +176,14 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      reiniciarSiPrimeraVez();
-      actualizarProgreso();
-    });
+    function reiniciarProgreso() {
+      if (confirm("¿Estás seguro de que deseas reiniciar tu progreso?")) {
+        localStorage.setItem('movivital_exercise_count', '0');
+        actualizarProgreso();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', actualizarProgreso);
   </script>
 </body>
 </html>
