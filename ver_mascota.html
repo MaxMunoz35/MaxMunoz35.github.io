@@ -110,9 +110,21 @@
       align-items: center;
     }
 
+    .evolution-images .evo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .evolution-images img {
       height: 150px;
       border-radius: 10px;
+    }
+
+    .evo-label {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
     }
 
     .btn-volver {
@@ -158,10 +170,22 @@
     <div class="evolution-section">
       <h3>Etapas de Evolución</h3>
       <div class="evolution-images" id="evolution-images">
-        <img id="evo1" alt="Etapa 1">
-        <img id="evo2" alt="Etapa 2">
-        <img id="evo3" alt="Etapa 3">
-        <img id="evo4" alt="Etapa 4">
+        <div class="evo-item">
+          <img id="evo1" alt="Etapa 1">
+          <div class="evo-label">Etapa 1</div>
+        </div>
+        <div class="evo-item">
+          <img id="evo2" alt="Etapa 2">
+          <div class="evo-label">Etapa 2</div>
+        </div>
+        <div class="evo-item">
+          <img id="evo3" alt="Etapa 3">
+          <div class="evo-label">Etapa 3</div>
+        </div>
+        <div class="evo-item">
+          <img id="evo4" alt="Etapa 4">
+          <div class="evo-label">Etapa 4</div>
+        </div>
       </div>
     </div>
 
