@@ -14,6 +14,7 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
         header {
             background-color: #4a4aff;
             color: white;
@@ -22,6 +23,7 @@
             font-size: 1.5rem;
             font-weight: bold;
         }
+
         .container {
             flex-grow: 1;
             padding: 1rem;
@@ -33,6 +35,7 @@
             max-width: 600px;
             margin: 0 auto;
         }
+
         .mascot-display {
             background-color: #d9f7f6;
             padding: 1.5rem;
@@ -42,6 +45,7 @@
             width: 90%;
             max-width: 350px;
         }
+
         .mascot-display img {
             width: 100%;
             max-width: 250px;
@@ -49,16 +53,19 @@
             display: block;
             margin: 0 auto 1rem auto;
         }
+
         .mascot-display h2 {
             color: #4a4aff;
             margin-bottom: 1rem;
             font-size: 1.8rem;
         }
+
         .progreso-section {
             width: 90%;
             max-width: 400px;
             margin-bottom: 1.5rem;
         }
+
         .barra-progreso {
             background-color: #ccc;
             height: 25px;
@@ -66,6 +73,7 @@
             overflow: hidden;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
+
         .barra-progreso-inner {
             display: block;
             height: 100%;
@@ -79,6 +87,7 @@
             font-weight: bold;
             font-size: 0.9rem;
         }
+
         .btn-volver {
             background-color: #4a4aff;
             color: white;
@@ -89,9 +98,11 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         .btn-volver:hover {
             background-color: #3a3abf;
         }
+
         .selector-mascotas-cuadro {
             background-color: #fff;
             padding: 1rem;
@@ -99,37 +110,58 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
+
         .selector-mascotas-cuadro h3 {
             margin-bottom: 1rem;
             color: #4a4aff;
         }
+
         .selector-mascotas {
             display: flex;
             overflow-x: auto;
             gap: 1rem;
         }
+
         .selector-mascotas .mascota-item {
             text-align: center;
         }
+
         .selector-mascotas img {
             width: 100px;
             height: auto;
             border: 3px solid transparent;
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.2s, border 0.2s;
+            transition: transform 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .selector-mascotas img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
         .selector-mascotas img.selected {
             border-color: #4a4aff;
-            transform: scale(1.1);
+            transform: scale(1.15);
+            box-shadow: 0 6px 15px rgba(74, 74, 255, 0.4);
+            animation: bounce 0.4s ease;
         }
+
+        @keyframes bounce {
+            0% { transform: scale(1.15) translateY(0); }
+            50% { transform: scale(1.25) translateY(-5px); }
+            100% { transform: scale(1.15) translateY(0); }
+        }
+
         .selector-mascotas p {
             margin-top: 0.3rem;
             font-size: 0.85rem;
         }
+
         .input-nombre {
             margin: 1rem 0;
         }
+
         .input-nombre input {
             padding: 0.5rem;
             border: 1px solid #ccc;
@@ -140,108 +172,108 @@
     </style>
 </head>
 <body>
-<header>Tu Compañero MoviVital</header>
-<div class="container">
-    <div id="mascot-selector-box" class="selector-mascotas-cuadro">
-        <h3>Elige tu mascota</h3>
-        <div id="mascot-selector" class="selector-mascotas">
-            <div class="mascota-item">
-                <img src="Mascota_i.png" alt="Mascota 1" onclick="elegirMascota('Mascota_i.png', this)">
+    <header>Tu Compañero MoviVital</header>
+    <div class="container">
+        <div id="mascot-selector-box" class="selector-mascotas-cuadro">
+            <h3>Elige tu mascota</h3>
+            <div id="mascot-selector" class="selector-mascotas">
+                <div class="mascota-item">
+                    <img src="Mascota_i.png" alt="Mascota 1" onclick="elegirMascota('Mascota_i.png', this)">
+                </div>
+                <div class="mascota-item">
+                    <img src="mascota_o.png" alt="Mascota 2" onclick="elegirMascota('mascota_o.png', this)">
+                </div>
+                <div class="mascota-item">
+                    <img src="mascota_k.png" alt="Mascota 3" onclick="elegirMascota('mascota_k.png', this)">
+                </div>
+                <div class="mascota-item">
+                    <img src="mascota_c.png" alt="Mascota 4" onclick="elegirMascota('mascota_c.png', this)">
+                </div>
             </div>
-            <div class="mascota-item">
-                <img src="mascota_o.png" alt="Mascota 2" onclick="elegirMascota('mascota_o.png', this)">
-            </div>
-            <div class="mascota-item">
-                <img src="mascota_k.png" alt="Mascota 3" onclick="elegirMascota('mascota_k.png', this)">
-            </div>
-            <div class="mascota-item">
-                <img src="mascota_c.png" alt="Mascota 4" onclick="elegirMascota('mascota_c.png', this)">
+            <div class="input-nombre">
+                <input type="text" id="mascot-custom-name" placeholder="Escribe el nombre de tu mascota" oninput="guardarNombreMascota()">
             </div>
         </div>
-        <div class="input-nombre">
-            <input type="text" id="mascot-custom-name" placeholder="Escribe el nombre de tu mascota" oninput="guardarNombreMascota()">
+
+        <div class="mascot-display">
+            <h2>¡Hola, <span id="mascot-name">Mascota</span>!</h2>
+            <img id="mascot-image" src="" alt="Tu Mascota">
+            <p id="mascot-message">Sigue ejercitándote para ayudarla a crecer.</p>
         </div>
-    </div>
 
-    <div class="mascot-display">
-        <h2>¡Hola, <span id="mascot-name">mascota_c.png</span>!</h2>
-        <img id="mascot-image" src="" alt="Tu Mascota">
-        <p id="mascot-message">Sigue ejercitándote para ayudarla a crecer.</p>
-    </div>
-
-    <div class="progreso-section">
-        <p>Progreso Total de Ejercicios:</p>
-        <div class="barra-progreso">
-            <div class="barra-progreso-inner" id="progress-bar-inner">0%</div>
+        <div class="progreso-section">
+            <p>Progreso Total de Ejercicios:</p>
+            <div class="barra-progreso">
+                <div class="barra-progreso-inner" id="progress-bar-inner">0%</div>
+            </div>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #777;">
+                Ejercicios completados: <span id="exercise-count-display">0</span>
+            </p>
         </div>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #777;">
-            Ejercicios completados: <span id="exercise-count-display">0</span>
-        </p>
+
+        <button class="btn-volver" onclick="window.location.href='index.html'">Volver a la App</button>
     </div>
 
-    <button class="btn-volver" onclick="window.history.back()">Volver a la App</button>
-</div>
+    <script>
+        const MAX_EXERCISES = 10;
 
-<script>
-    const MAX_EXERCISES = 10;
+        const mascotStages = [
+            { threshold: 0, image: 'img/mascota_stage1.png', message: '¡Tu mascota es un retoño! Sigue ejercitándote para que crezca fuerte.' },
+            { threshold: 3, image: 'img/mascota_stage2.png', message: '¡Tu mascota está en crecimiento! ¡Vamos por más ejercicios!' },
+            { threshold: 6, image: 'img/mascota_stage3.png', message: '¡Tu mascota es una adulta vital! ¡Estás haciendo un gran trabajo!' },
+            { threshold: 10, image: 'img/mascota_stage4.png', message: '¡Felicidades! Tu mascota ha alcanzado su máximo potencial. ¡Eres un campeón!' }
+        ];
 
-    const mascotStages = [
-        { threshold: 0, image: 'img/mascota_stage1.png', message: '¡Tu mascota es un retoño! Sigue ejercitándote para que crezca fuerte.' },
-        { threshold: 3, image: 'img/mascota_stage2.png', message: '¡Tu mascota está en crecimiento! ¡Vamos por más ejercicios!' },
-        { threshold: 6, image: 'img/mascota_stage3.png', message: '¡Tu mascota es una adulta vital! ¡Estás haciendo un gran trabajo!' },
-        { threshold: 10, image: 'img/mascota_stage4.png', message: '¡Felicidades! Tu mascota ha alcanzado su máximo potencial. ¡Eres un campeón!' }
-    ];
+        function updateMascotAndProgress() {
+            let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
+            let selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
+            let customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
 
-    function updateMascotAndProgress() {
-        let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-        let selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota1.png';
-        let customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
+            document.getElementById('mascot-name').textContent = customName;
+            document.getElementById('exercise-count-display').textContent = exerciseCount;
 
-        document.getElementById('mascot-name').textContent = customName;
-        document.getElementById('exercise-count-display').textContent = exerciseCount;
+            let progressPercentage = (exerciseCount / MAX_EXERCISES) * 100;
+            if (progressPercentage > 100) progressPercentage = 100;
 
-        let progressPercentage = (exerciseCount / MAX_EXERCISES) * 100;
-        if (progressPercentage > 100) progressPercentage = 100;
+            const progressBar = document.getElementById('progress-bar-inner');
+            progressBar.style.width = progressPercentage + '%';
+            progressBar.textContent = Math.round(progressPercentage) + '%';
 
-        const progressBar = document.getElementById('progress-bar-inner');
-        progressBar.style.width = progressPercentage + '%';
-        progressBar.textContent = Math.round(progressPercentage) + '%';
-
-        let currentStage = mascotStages[0];
-        for (let i = mascotStages.length - 1; i >= 0; i--) {
-            if (exerciseCount >= mascotStages[i].threshold) {
-                currentStage = mascotStages[i];
-                break;
+            let currentStage = mascotStages[0];
+            for (let i = mascotStages.length - 1; i >= 0; i--) {
+                if (exerciseCount >= mascotStages[i].threshold) {
+                    currentStage = mascotStages[i];
+                    break;
+                }
             }
+
+            document.getElementById('mascot-image').src = selectedMascot;
+            document.getElementById('mascot-message').textContent = currentStage.message;
+            document.getElementById('mascot-custom-name').value = customName;
+
+            document.querySelectorAll('.selector-mascotas img').forEach(img => {
+                img.classList.remove('selected');
+                if (img.src.includes(selectedMascot)) {
+                    img.classList.add('selected');
+                }
+            });
         }
-        document.getElementById('mascot-image').src = selectedMascot;
-        document.getElementById('mascot-message').textContent = currentStage.message;
 
-        document.getElementById('mascot-custom-name').value = customName;
+        function elegirMascota(mascota, imgElement) {
+            localStorage.setItem('movivital_mascot', mascota);
+            updateMascotAndProgress();
+        }
 
-        document.querySelectorAll('.selector-mascotas img').forEach(img => {
-            img.classList.remove('selected');
-            if (img.src.includes(selectedMascot)) {
-                img.classList.add('selected');
-            }
+        function guardarNombreMascota() {
+            const nombre = document.getElementById('mascot-custom-name').value;
+            localStorage.setItem('movivital_mascot_name', nombre);
+            document.getElementById('mascot-name').textContent = nombre;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('mascot-selector-box').style.display = 'block';
+            updateMascotAndProgress();
         });
-    }
-
-    function elegirMascota(mascota, imgElement) {
-        localStorage.setItem('movivital_mascot', mascota);
-        updateMascotAndProgress();
-    }
-
-    function guardarNombreMascota() {
-        const nombre = document.getElementById('mascot-custom-name').value;
-        localStorage.setItem('movivital_mascot_name', nombre);
-        document.getElementById('mascot-name').textContent = nombre;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('mascot-selector-box').style.display = 'block';
-        updateMascotAndProgress();
-    });
-</script>
+    </script>
 </body>
 </html>
