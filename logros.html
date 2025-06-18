@@ -33,32 +33,43 @@
       margin-bottom: 1rem;
     }
 
-    .etapas {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
+    .progreso-section {
       margin-bottom: 2rem;
     }
 
-    .etapa {
-      background-color: #fff;
+    .barra-progreso {
+      background-color: #ccc;
+      height: 25px;
       border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 160px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+      margin: 0 auto;
+      width: 90%;
+      max-width: 400px;
     }
 
-    .etapa img {
-      width: 100%;
-      max-height: 130px;
-      object-fit: contain;
-    }
-
-    .etapa p {
-      margin-top: 0.5rem;
+    .barra-progreso-inner {
+      height: 100%;
+      width: 0%;
+      background-color: #15a858;
+      border-radius: 12px;
+      transition: width 0.5s ease-in-out;
+      text-align: center;
+      line-height: 25px;
+      color: white;
       font-weight: bold;
-      color: #4a4aff;
+      font-size: 0.9rem;
+    }
+
+    .etapa-actual {
+      margin: 2rem auto;
+      max-width: 250px;
+    }
+
+    .etapa-actual img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .btn-volver {
@@ -75,54 +86,74 @@
     .btn-volver:hover {
       background-color: #3a3abf;
     }
+
+    .counter-text {
+      font-size: 0.95rem;
+      color: #555;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
-  <header>Etapas de tu Mascota</header>
+  <header>Tu Progreso MoviVital</header>
   <div class="container">
-    <h2 id="nombre-mascota">Mi mascota</h2>
-    <div class="etapas" id="galeria-etapas">
-      <!-- Aquí se insertarán las fases -->
+    <h2 id="nombre-mascota-logros">Mascota</h2>
+
+    <div class="progreso-section">
+      <div class="barra-progreso">
+        <div class="barra-progreso-inner" id="progress-bar-inner">0%</div>
+      </div>
+      <p class="counter-text">Ejercicios completados: <span id="exercise-count">0</span></p>
     </div>
+
+    <div class="etapa-actual">
+      <img id="imagen-etapa-actual" src="" alt="Mascota actual">
+    </div>
+
     <button class="btn-volver" onclick="window.location.href='index.html'">Volver a la App</button>
   </div>
 
   <script>
-    const FASES = 4;
-    const etiquetas = ["Inicio", "Etapa 2", "Etapa 3", "Etapa final"];
+    const MAX_EXERCISES = 10;
 
-    function obtenerPrefijoDeMascota(nombreArchivo) {
-      return nombreArchivo.replace('.png', '').toLowerCase();
-    }
+    const mascotStages = [
+      { threshold: 0, stage: 1 },
+      { threshold: 3, stage: 2 },
+      { threshold: 6, stage: 3 },
+      { threshold: 10, stage: 4 }
+    ];
 
-    function mostrarEtapas() {
-      const contenedor = document.getElementById('galeria-etapas');
-      const nombreMascota = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
-      const nombreVisible = localStorage.getItem('movivital_mascot_name') || nombreMascota;
-      const prefijo = obtenerPrefijoDeMascota(nombreMascota);
-      document.getElementById('nombre-mascota').textContent = `Evolución de ${nombreVisible}`;
+    function actualizarProgreso() {
+      const exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
+      const selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
+      const customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
+      const nombreVisible = customName.replace('.png', '');
 
-      for (let i = 1; i <= FASES; i++) {
-        const etapa = document.createElement('div');
-        etapa.className = 'etapa';
+      document.getElementById('nombre-mascota-logros').textContent = `Progreso de ${nombreVisible}`;
+      document.getElementById('exercise-count').textContent = exerciseCount;
 
-        const img = document.createElement('img');
-        if (i === 1) {
-          img.src = nombreMascota;
-        } else {
-          img.src = `${prefijo}_stage${i}.png`;
+      let percentage = (exerciseCount / MAX_EXERCISES) * 100;
+      if (percentage > 100) percentage = 100;
+
+      const progressBar = document.getElementById('progress-bar-inner');
+      progressBar.style.width = percentage + '%';
+      progressBar.textContent = Math.round(percentage) + '%';
+
+      const prefijo = selectedMascot.replace('.png', '').toLowerCase();
+      let currentStage = 1;
+
+      for (let i = mascotStages.length - 1; i >= 0; i--) {
+        if (exerciseCount >= mascotStages[i].threshold) {
+          currentStage = mascotStages[i].stage;
+          break;
         }
-
-        const texto = document.createElement('p');
-        texto.textContent = etiquetas[i - 1];
-
-        etapa.appendChild(img);
-        etapa.appendChild(texto);
-        contenedor.appendChild(etapa);
       }
+
+      let imgSrc = currentStage === 1 ? selectedMascot : `${prefijo}_stage${currentStage}.png`;
+      document.getElementById('imagen-etapa-actual').src = imgSrc;
     }
 
-    document.addEventListener('DOMContentLoaded', mostrarEtapas);
+    document.addEventListener('DOMContentLoaded', actualizarProgreso);
   </script>
 </body>
 </html>
