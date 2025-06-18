@@ -53,13 +53,14 @@
 
     .selector-mascotas {
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
+      overflow-x: auto;
       gap: 1rem;
+      justify-content: center;
     }
 
     .mascota-item {
       text-align: center;
+      flex: 0 0 auto;
     }
 
     .mascota-item img {
@@ -104,9 +105,9 @@
 
     .evolution-images {
       display: flex;
-      overflow-x: auto;
       gap: 1rem;
-      padding-bottom: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .evolution-images img {
