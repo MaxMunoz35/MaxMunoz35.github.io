@@ -130,7 +130,7 @@
 
     <div class="seccion-ejercicios">
       <h2>Biblioteca de ejercicios</h2>
-      <button class="boton-ejercicio" onclick="window.open('https://www.youtube.com/watch?v=M0Jh5tLQRE0', '_blank')">
+      <button class="boton-ejercicio" onclick="incrementExerciseCount(); window.open('https://www.youtube.com/watch?v=M0Jh5tLQRE0', '_blank')">
         Calentamiento
       </button>
       <button class="boton-ejercicio" onclick="window.location.href='ejercicios.html'">
@@ -171,6 +171,13 @@
       const progressPercentage = Math.min((exerciseCount / MAX_EXERCISES) * 100, 100);
       progressBarInner.style.width = progressPercentage + '%';
       progressBarInner.textContent = Math.round(progressPercentage) + '%';
+    }
+
+    function incrementExerciseCount() {
+      let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
+      exerciseCount++;
+      localStorage.setItem('movivital_exercise_count', exerciseCount);
+      mostrarMascotaActual();
     }
 
     document.addEventListener('DOMContentLoaded', mostrarMascotaActual);
