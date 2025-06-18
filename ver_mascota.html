@@ -105,9 +105,9 @@
 
     .evolution-images {
       display: flex;
+      flex-direction: column;
       gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
+      align-items: center;
     }
 
     .evolution-images img {
@@ -157,7 +157,12 @@
 
     <div class="evolution-section">
       <h3>Etapas de Evolución</h3>
-      <div class="evolution-images" id="evolution-images"></div>
+      <div class="evolution-images" id="evolution-images">
+        <img id="evo1" alt="Etapa 1">
+        <img id="evo2" alt="Etapa 2">
+        <img id="evo3" alt="Etapa 3">
+        <img id="evo4" alt="Etapa 4">
+      </div>
     </div>
 
     <div class="btn-volver" onclick="window.history.back()">Volver a la App</div>
@@ -188,13 +193,9 @@
     function loadEvolutions() {
       const selectedMascot = localStorage.getItem('movivital_mascot');
       const baseName = selectedMascot ? selectedMascot.split('.')[0] : 'Mascota_i';
-      const evolutionContainer = document.getElementById('evolution-images');
-      evolutionContainer.innerHTML = '';
       for (let i = 1; i <= 4; i++) {
-        const img = document.createElement('img');
-        img.src = `${baseName}_stage${i}.png`;
-        img.alt = `Etapa ${i}`;
-        evolutionContainer.appendChild(img);
+        const stageImg = document.getElementById(`evo${i}`);
+        stageImg.src = `${baseName}_stage${i}.png`;
       }
     }
 
