@@ -56,18 +56,24 @@
       display: block;
       height: 100%;
       width: 0%;
-      background-color: #15a858;
+      background-color: #4a4aff;
       border-radius: 10px;
       transition: width 0.5s ease-in-out;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9rem;
+      text-align: center;
+      line-height: 20px;
     }
 
     .btn-logros {
-      background-color: #118242;
+      background-color: #4a4aff;
       color: white;
       border: none;
       padding: 0.5rem 1rem;
       border-radius: 8px;
       font-size: 1rem;
+      cursor: pointer;
     }
 
     .mascota-clickable {
@@ -87,7 +93,7 @@
     }
 
     .boton-ejercicio {
-      background-color: #ffed00;
+      background-color: #4a4aff;
       border: none;
       padding: 1.5rem;
       margin: 1rem auto;
@@ -98,6 +104,13 @@
       display: block;
       width: 80%;
       max-width: 400px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .boton-ejercicio:hover {
+      background-color: #3a3abf;
     }
   </style>
 </head>
@@ -106,7 +119,7 @@
   <div class="container">
     <div class="seccion-mascota">
       <div class="progreso">
-        <div class="barra-progreso"><span id="main-progress-bar-inner"></span></div>
+        <div class="barra-progreso"><span id="main-progress-bar-inner">0%</span></div>
         <button class="btn-logros" onclick="window.location.href='logros.html'">Ver mis logros</button>
       </div>
       <div>
@@ -117,6 +130,9 @@
 
     <div class="seccion-ejercicios">
       <h2>Biblioteca de ejercicios</h2>
+      <button class="boton-ejercicio" onclick="window.open('https://www.youtube.com/watch?v=M0Jh5tLQRE0', '_blank')">
+        Calentamiento
+      </button>
       <button class="boton-ejercicio" onclick="window.location.href='ejercicios.html'">
         Ir a ejercicios
       </button>
@@ -154,6 +170,7 @@
       const progressBarInner = document.getElementById('main-progress-bar-inner');
       const progressPercentage = Math.min((exerciseCount / MAX_EXERCISES) * 100, 100);
       progressBarInner.style.width = progressPercentage + '%';
+      progressBarInner.textContent = Math.round(progressPercentage) + '%';
     }
 
     document.addEventListener('DOMContentLoaded', mostrarMascotaActual);
