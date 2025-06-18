@@ -1,138 +1,144 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoviVital</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f2f2f2;
-            color: #333;
-        }
-        header {
-            background-color: #4a4aff;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .container {
-            padding: 1rem;
-        }
-        .seccion-mascota {
-            background-color: #d9f7f6;
-            padding: 1rem;
-            border-radius: 15px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .progreso {
-            flex-grow: 1;
-            margin-right: 1rem;
-        }
-        .barra-progreso {
-            background-color: #ccc;
-            height: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .barra-progreso span {
-            display: block;
-            height: 100%;
-            width: 0%; 
-            background-color: #15a858;
-            border-radius: 10px; 
-            transition: width 0.5s ease-in-out; 
-        }
-        .btn-logros {
-            background-color: #118242;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .seccion-ejercicios h2 {
-            margin-bottom: 0.8rem;
-            text-align: center;
-        }
-        .boton-ejercicio {
-            background-color: #ffed00;
-            border: none;
-            padding: 1.5rem;
-            margin: 1rem auto;
-            border-radius: 15px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-            display: block;
-            width: 80%;
-            max-width: 400px;
-        }
-        .mascota-clickable {
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoviVital</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
+      color: #333;
+    }
+    header {
+      background-color: #4a4aff;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .container {
+      padding: 1rem;
+    }
+    .seccion-mascota {
+      background-color: #d9f7f6;
+      padding: 1rem;
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .progreso {
+      flex-grow: 1;
+      margin-right: 1rem;
+    }
+    .barra-progreso {
+      background-color: #ccc;
+      height: 25px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .barra-progreso-inner {
+      height: 100%;
+      width: 0%;
+      background-color: #15a858;
+      border-radius: 12px;
+      transition: width 0.5s ease-in-out;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    .btn-logros {
+      background-color: #118242;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .seccion-ejercicios h2 {
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+    .boton-ejercicio {
+      background-color: #ffed00;
+      border: none;
+      padding: 1.5rem;
+      margin: 1rem auto;
+      border-radius: 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      display: block;
+      width: 80%;
+      max-width: 400px;
+    }
+    .mascota-clickable {
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <header>MoviVital App</header>
-    <div class="container">
-        <div class="seccion-mascota">
-            <div class="progreso">
-                <div class="barra-progreso"><span></span></div>
-                <button class="btn-logros">Ver mis logros</button>
-            </div>
-            <img src="Mascota_i.png" alt="Mascota" width="80" class="mascota-clickable" onclick="irAVerMascota()">
+  <header>MoviVital App</header>
+  <div class="container">
+    <div class="seccion-mascota">
+      <div class="progreso">
+        <div class="barra-progreso">
+          <div class="barra-progreso-inner" id="progress-bar-inner">0%</div>
         </div>
-
-        <div class="seccion-ejercicios">
-            <h2>Biblioteca de ejercicios</h2>
-            <button class="boton-ejercicio" onclick="realizarEjercicio('https://www.youtube.com/watch?v=M0Jh5tLQRE0')">
-                Calentamiento
-            </button>
-            <button class="boton-ejercicio" onclick="irAEjercicios()">
-                Página de ejercicios
-            </button>
-        </div>
+        <button class="btn-logros" onclick="irAVerMascota()">Ver mis logros</button>
+      </div>
+      <img src="Mascota_i.png" alt="Mascota" width="80" class="mascota-clickable" onclick="irAVerMascota()">
     </div>
-    <script>
-        const MAX_EXERCISES_MAIN_PAGE = 10;
 
-        function realizarEjercicio(link) {
-            window.open(link, '_blank');
-        }
+    <div class="seccion-ejercicios">
+      <h2>Biblioteca de ejercicios</h2>
+      <button class="boton-ejercicio" onclick="realizarEjercicio('https://www.youtube.com/watch?v=M0Jh5tLQRE0')">
+        Calentamiento
+      </button>
+      <button class="boton-ejercicio" onclick="irAEjercicios()">
+        Página de ejercicios
+      </button>
+    </div>
+  </div>
 
-        function irAVerMascota() {
-            window.location.href = 'ver_mascota.html';
-        }
+  <script>
+    const MAX_EXERCISES = 10;
 
-        function irAEjercicios() {
-            window.location.href = 'ejercicios.html';
-        }
+    function updateProgressBar() {
+      let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
+      if (exerciseCount < 0) exerciseCount = 0;
+      if (exerciseCount > MAX_EXERCISES) exerciseCount = MAX_EXERCISES;
 
-        function updateMainPageProgressBar() {
-            let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-            if (isNaN(exerciseCount) || exerciseCount < 0) {
-                exerciseCount = 0;
-            }
+      let progressPercentage = (exerciseCount / MAX_EXERCISES) * 100;
+      const progressBar = document.getElementById('progress-bar-inner');
 
-            let progressPercentage = (exerciseCount / MAX_EXERCISES_MAIN_PAGE) * 100;
-            if (progressPercentage > 100) progressPercentage = 100;
+      if (progressBar) {
+        progressBar.style.width = progressPercentage + '%';
+        progressBar.textContent = Math.round(progressPercentage) + '%';
+      }
+    }
 
-            const progressBarInner = document.getElementById('main-progress-bar-inner');
-            if (progressBarInner) {
-                progressBarInner.style.width = progressPercentage + '%';
-            }
-        }
-        document.addEventListener('DOMContentLoaded', updateMainPageProgressBar);
+    function realizarEjercicio(link) {
+      window.open(link, '_blank');
+    }
 
-    </script>
+    function irAVerMascota() {
+      window.location.href = 'ver_mascota.html';
+    }
+
+    function irAEjercicios() {
+      window.location.href = 'ejercicios.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', updateProgressBar);
+  </script>
 </body>
 </html>
