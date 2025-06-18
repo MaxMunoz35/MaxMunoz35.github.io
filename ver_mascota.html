@@ -165,7 +165,7 @@
       </div>
     </div>
 
-    <div class="btn-volver" onclick="window.history.back()">Volver a la App</div>
+    <div class="btn-volver" onclick="window.location.href='index.html'">Volver a la App</div>
   </div>
 
   <script>
@@ -173,6 +173,7 @@
       localStorage.setItem('movivital_mascot', mascota);
       updateSelection();
       loadEvolutions();
+      window.dispatchEvent(new Event("storage"));
     }
 
     function guardarNombreMascota() {
@@ -191,12 +192,13 @@
     }
 
     function loadEvolutions() {
-      const selectedMascot = localStorage.getItem('movivital_mascot') || 'Mascota_i.png';
-      const baseName = selectedMascot.split('.')[0];
-      for (let i = 1; i <= 4; i++) {
-        const stageImg = document.getElementById(`evo${i}`);
-        stageImg.src = i === 1 ? `${baseName}.png` : `${baseName}_stage${i}.png`;
-      }
+      const selectedMascot = localStorage.getItem('movivital_mascot');
+      if (!selectedMascot) return;
+      const baseName = selectedMascot.replace('.png', '');
+      document.getElementById('evo1').src = `${baseName}.png`;
+      document.getElementById('evo2').src = `${baseName}_stage2.png`;
+      document.getElementById('evo3').src = `${baseName}_stage3.png`;
+      document.getElementById('evo4').src = `${baseName}_stage4.png`;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
