@@ -130,9 +130,10 @@
     ];
 
     function actualizarProgreso() {
-      let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-      if (isNaN(exerciseCount)) exerciseCount = 0;
+      // 🔁 Modo prueba: reiniciar el contador al cargar la página
+      localStorage.setItem('movivital_exercise_count', '0');
 
+      let exerciseCount = 0;
       const selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
       const customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
       const nombreVisible = customName.replace('.png', '');
@@ -140,24 +141,12 @@
       document.getElementById('nombre-mascota-logros').textContent = `Progreso de ${nombreVisible}`;
       document.getElementById('exercise-count').textContent = exerciseCount;
 
-      let percentage = (exerciseCount / MAX_EXERCISES) * 100;
-      if (percentage > 100) percentage = 100;
-
       const progressBar = document.getElementById('progress-bar-inner');
-      progressBar.style.width = percentage + '%';
-      progressBar.textContent = Math.round(percentage) + '%';
+      progressBar.style.width = '0%';
+      progressBar.textContent = '0%';
 
       const prefijo = selectedMascot.replace('.png', '').toLowerCase();
-      let currentStage = 1;
-
-      for (let i = mascotStages.length - 1; i >= 0; i--) {
-        if (exerciseCount >= mascotStages[i].threshold) {
-          currentStage = mascotStages[i].stage;
-          break;
-        }
-      }
-
-      const imgSrc = currentStage === 1 ? selectedMascot : `${prefijo}_stage${currentStage}.png`;
+      const imgSrc = selectedMascot; // etapa 1 por defecto
       document.getElementById('imagen-etapa-actual').src = imgSrc;
     }
 
@@ -166,10 +155,10 @@
       const numero = parseInt(cantidad, 10);
 
       if (!isNaN(numero) && numero > 0) {
-        let actual = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
+        let actual = 0; // ya reiniciado arriba
         actual += numero;
         localStorage.setItem('movivital_exercise_count', actual);
-        actualizarProgreso();
+        actualizarProgreso(); // vuelve a mostrar progreso con nuevo número
       } else {
         alert("Por favor, ingresa un número válido mayor que 0.");
       }
