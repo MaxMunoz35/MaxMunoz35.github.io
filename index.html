@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MoviVital</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoviVital App</title>
   <style>
     body {
       margin: 0;
@@ -11,6 +11,7 @@
       background-color: #f2f2f2;
       color: #333;
     }
+
     header {
       background-color: #4a4aff;
       color: white;
@@ -19,54 +20,37 @@
       font-size: 1.5rem;
       font-weight: bold;
     }
+
     .container {
       padding: 1rem;
-    }
-    .seccion-mascota {
-      background-color: #d9f7f6;
-      padding: 1rem;
-      border-radius: 15px;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .progreso {
-      flex-grow: 1;
-      margin-right: 1rem;
-    }
-    .barra-progreso {
-      background-color: #ccc;
-      height: 25px;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 0.5rem;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .barra-progreso-inner {
-      height: 100%;
-      width: 0%;
-      background-color: #15a858;
-      border-radius: 12px;
-      transition: width 0.5s ease-in-out;
+      max-width: 600px;
+      margin: 0 auto;
       text-align: center;
-      line-height: 25px;
-      color: white;
+    }
+
+    .mascota-actual {
+      margin: 2rem auto 1rem;
+      max-width: 250px;
+    }
+
+    .mascota-actual img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .mascota-nombre {
+      font-size: 1.2rem;
+      color: #4a4aff;
       font-weight: bold;
-      font-size: 0.9rem;
+      margin-top: 0.5rem;
     }
-    .btn-logros {
-      background-color: #118242;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
+
     .seccion-ejercicios h2 {
-      margin-bottom: 0.8rem;
-      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.4rem;
     }
+
     .boton-ejercicio {
       background-color: #ffed00;
       border: none;
@@ -79,7 +63,9 @@
       display: block;
       width: 80%;
       max-width: 400px;
+      cursor: pointer;
     }
+
     .mascota-clickable {
       cursor: pointer;
     }
@@ -88,57 +74,57 @@
 <body>
   <header>MoviVital App</header>
   <div class="container">
-    <div class="seccion-mascota">
-      <div class="progreso">
-        <div class="barra-progreso">
-          <div class="barra-progreso-inner" id="progress-bar-inner">0%</div>
-        </div>
-        <button class="btn-logros" onclick="window.location.href='logros.html'">Ver mis logros</button>
-      </div>
-      <img src="Mascota_i.png" alt="Mascota" width="80" class="mascota-clickable" onclick="irAVerMascota()">
+    <div class="mascota-actual">
+      <img id="mascota-principal" src="" alt="Tu mascota actual" />
+      <div class="mascota-nombre" id="nombre-mascota-principal"></div>
     </div>
 
     <div class="seccion-ejercicios">
       <h2>Biblioteca de ejercicios</h2>
-      <button class="boton-ejercicio" onclick="realizarEjercicio('https://www.youtube.com/watch?v=M0Jh5tLQRE0')">
-        Calentamiento
+      <button class="boton-ejercicio" onclick="window.location.href='ejercicios.html'">
+        Ir a ejercicios
       </button>
-      <button class="boton-ejercicio" onclick="irAEjercicios()">
-        Página de ejercicios
+      <button class="boton-ejercicio" onclick="window.location.href='ver_mascota.html'">
+        Ver mascota
+      </button>
+      <button class="boton-ejercicio" onclick="window.location.href='logros.html'">
+        Ver logros
       </button>
     </div>
   </div>
 
   <script>
     const MAX_EXERCISES = 10;
+    const mascotStages = [
+      { threshold: 0, stage: 1 },
+      { threshold: 3, stage: 2 },
+      { threshold: 6, stage: 3 },
+      { threshold: 10, stage: 4 }
+    ];
 
-    function updateProgressBar() {
+    function mostrarMascotaActual() {
       let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-      if (exerciseCount < 0) exerciseCount = 0;
-      if (exerciseCount > MAX_EXERCISES) exerciseCount = MAX_EXERCISES;
+      const selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
+      const customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
+      const nombreVisible = customName.replace('.png', '');
 
-      let progressPercentage = (exerciseCount / MAX_EXERCISES) * 100;
-      const progressBar = document.getElementById('progress-bar-inner');
+      document.getElementById('nombre-mascota-principal').textContent = nombreVisible;
 
-      if (progressBar) {
-        progressBar.style.width = progressPercentage + '%';
-        progressBar.textContent = Math.round(progressPercentage) + '%';
+      const prefijo = selectedMascot.replace('.png', '').toLowerCase();
+      let currentStage = 1;
+
+      for (let i = mascotStages.length - 1; i >= 0; i--) {
+        if (exerciseCount >= mascotStages[i].threshold) {
+          currentStage = mascotStages[i].stage;
+          break;
+        }
       }
+
+      const imgSrc = currentStage === 1 ? selectedMascot : `${prefijo}_stage${currentStage}.png`;
+      document.getElementById('mascota-principal').src = imgSrc;
     }
 
-    function realizarEjercicio(link) {
-      window.open(link, '_blank');
-    }
-
-    function irAVerMascota() {
-      window.location.href = 'ver_mascota.html';
-    }
-
-    function irAEjercicios() {
-      window.location.href = 'ejercicios.html';
-    }
-
-    document.addEventListener('DOMContentLoaded', updateProgressBar);
+    document.addEventListener('DOMContentLoaded', mostrarMascotaActual);
   </script>
 </body>
 </html>
