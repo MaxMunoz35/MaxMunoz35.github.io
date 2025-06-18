@@ -191,11 +191,11 @@
     }
 
     function loadEvolutions() {
-      const selectedMascot = localStorage.getItem('movivital_mascot');
-      const baseName = selectedMascot ? selectedMascot.split('.')[0] : 'Mascota_i';
+      const selectedMascot = localStorage.getItem('movivital_mascot') || 'Mascota_i.png';
+      const baseName = selectedMascot.split('.')[0];
       for (let i = 1; i <= 4; i++) {
         const stageImg = document.getElementById(`evo${i}`);
-        stageImg.src = `${baseName}_stage${i}.png`;
+        stageImg.src = i === 1 ? `${baseName}.png` : `${baseName}_stage${i}.png`;
       }
     }
 
