@@ -89,10 +89,10 @@
 
   <script>
     const FASES = 4;
+    const etiquetas = ["Inicio", "Etapa 2", "Etapa 3", "Etapa final"];
 
     function obtenerPrefijoDeMascota(nombreArchivo) {
-      // Extrae 'mascota_c' de 'mascota_c.png'
-      return nombreArchivo.replace('.png', '');
+      return nombreArchivo.replace('.png', '').toLowerCase();
     }
 
     function mostrarEtapas() {
@@ -100,19 +100,21 @@
       const nombreMascota = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
       const nombreVisible = localStorage.getItem('movivital_mascot_name') || nombreMascota;
       const prefijo = obtenerPrefijoDeMascota(nombreMascota);
-      const nombreElemento = document.getElementById('nombre-mascota');
-      nombreElemento.textContent = `Evolución de ${nombreVisible}`;
+      document.getElementById('nombre-mascota').textContent = `Evolución de ${nombreVisible}`;
 
       for (let i = 1; i <= FASES; i++) {
         const etapa = document.createElement('div');
         etapa.className = 'etapa';
 
         const img = document.createElement('img');
-        img.src = `${prefijo}_stage${i}.png`;
-        img.alt = `Fase ${i}`;
+        if (i === 1) {
+          img.src = nombreMascota;
+        } else {
+          img.src = `${prefijo}_stage${i}.png`;
+        }
 
         const texto = document.createElement('p');
-        texto.textContent = `Fase ${i}`;
+        texto.textContent = etiquetas[i - 1];
 
         etapa.appendChild(img);
         etapa.appendChild(texto);
