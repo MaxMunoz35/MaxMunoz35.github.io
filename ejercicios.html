@@ -10,6 +10,12 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #fff8e1;
       color: #3e2723;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    body.fade-in {
+      opacity: 1;
     }
 
     header {
@@ -50,12 +56,23 @@
       max-width: 400px;
       color: white;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
       cursor: pointer;
+      position: relative;
     }
 
     .boton-ejercicio:hover {
       background-color: #bf360c;
+      transform: scale(1.03);
+    }
+
+    .boton-ejercicio::before {
+      content: "\1F4AA "; /* ícono de brazo fuerte */
+      font-size: 1.2rem;
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .btn-volver {
@@ -98,7 +115,7 @@
         Ejercicios de Rodilla y Cadera
       </button>
 
-      <button class="btn-volver" onclick="window.history.back()">Volver a la App</button>
+      <button class="btn-volver" onclick="volverConTransicion()">Volver a la App</button>
     </div>
   </div>
 
@@ -109,6 +126,18 @@
       localStorage.setItem('movivital_exercise_count', exerciseCount);
       console.log('Exercise count incremented:', exerciseCount);
     }
+
+    function volverConTransicion() {
+      document.body.classList.remove("fade-in");
+      document.body.style.opacity = 0;
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 300);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      requestAnimationFrame(() => document.body.classList.add("fade-in"));
+    });
   </script>
 </body>
 </html>
