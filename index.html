@@ -10,6 +10,12 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #fff8e1;
       color: #3e2723;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    body.fade-in {
+      opacity: 1;
     }
 
     header {
@@ -74,10 +80,12 @@
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .btn-logros:hover {
       background-color: #bf360c;
+      transform: scale(1.03);
     }
 
     .mascota-clickable {
@@ -111,11 +119,12 @@
       max-width: 400px;
       color: white;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .boton-ejercicio:hover {
       background-color: #bf360c;
+      transform: scale(1.03);
     }
   </style>
 </head>
@@ -125,10 +134,10 @@
     <div class="seccion-mascota">
       <div class="progreso">
         <div class="barra-progreso"><span id="main-progress-bar-inner">0%</span></div>
-        <button class="btn-logros" onclick="window.location.href='logros.html'">Ver mis logros</button>
+        <button class="btn-logros" onclick="irConTransicion('logros.html')">Ver mis logros</button>
       </div>
       <div>
-        <img id="mascota-principal" src="" alt="Tu mascota actual" width="80" class="mascota-clickable" onclick="window.location.href='ver_mascota.html'">
+        <img id="mascota-principal" src="" alt="Tu mascota actual" width="80" class="mascota-clickable" onclick="irConTransicion('ver_mascota.html')">
         <div class="mascota-nombre" id="nombre-mascota-principal"></div>
       </div>
     </div>
@@ -138,7 +147,7 @@
       <button class="boton-ejercicio" onclick="incrementExerciseCountAbrirVideo('https://www.youtube.com/watch?v=M0Jh5tLQRE0')">
         Calentamiento
       </button>
-      <button class="boton-ejercicio" onclick="window.location.href='ejercicios.html'">
+      <button class="boton-ejercicio" onclick="irConTransicion('ejercicios.html')">
         Ir a ejercicios
       </button>
     </div>
@@ -186,7 +195,18 @@
       window.open(url, '_blank');
     }
 
-    document.addEventListener('DOMContentLoaded', mostrarMascotaActual);
+    function irConTransicion(url) {
+      document.body.classList.remove("fade-in");
+      document.body.style.opacity = 0;
+      setTimeout(() => {
+        window.location.href = url;
+      }, 300);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      requestAnimationFrame(() => document.body.classList.add("fade-in"));
+      mostrarMascotaActual();
+    });
   </script>
 </body>
 </html>
