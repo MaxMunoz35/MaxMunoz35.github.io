@@ -208,7 +208,7 @@
       progressBar.style.width = percentage + '%';
       progressBar.textContent = Math.round(percentage) + '%';
 
-      const prefijo = selectedMascot.replace('.png', '').toLowerCase();
+      const prefijo = selectedMascot.replace('.png', '');
       let currentStage = 1;
 
       for (let i = mascotStages.length - 1; i >= 0; i--) {
