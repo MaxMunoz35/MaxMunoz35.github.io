@@ -95,6 +95,34 @@
       margin-top: 0.5rem;
     }
 
+    .dias-semana {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+
+    .dia {
+      width: 80px;
+      height: 80px;
+      background-color: white;
+      border: 2px solid #4a4aff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+
+    .dia.activado {
+      background-color: #4a4aff;
+      color: white;
+    }
+
     #felicitacion-popup {
       display: none;
       position: fixed;
@@ -137,6 +165,10 @@
       <img id="imagen-etapa-actual" src="" alt="Mascota actual" />
     </div>
 
+    <h2>Días de la semana</h2>
+    <p class="counter-text">Días activos esta semana: <span id="dias-activos">0</span></p>
+    <div class="dias-semana" id="dias-semana"></div>
+
     <button class="btn" onclick="window.location.href='index.html'">Volver a la App</button>
   </div>
 
@@ -146,13 +178,7 @@
 
   <script>
     const MAX_EXERCISES = 10;
-
-    const mascotStages = [
-      { threshold: 0, stage: 1 },
-      { threshold: 3, stage: 2 },
-      { threshold: 6, stage: 3 },
-      { threshold: 10, stage: 4 }
-    ];
+    const dias = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
     function mostrarPopupFelicitacion() {
       const popup = document.getElementById('felicitacion-popup');
@@ -219,7 +245,54 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', actualizarProgreso);
+    function cargarDiasSemana() {
+      const contenedor = document.getElementById('dias-semana');
+      let diasActivos = 0;
+
+      dias.forEach((dia, i) => {
+        const div = document.createElement('div');
+        div.classList.add('dia');
+        div.textContent = dia;
+
+        if (localStorage.getItem('movivital_dia_' + i) === 'true') {
+          div.classList.add('activado');
+          diasActivos++;
+        }
+
+        div.addEventListener('click', () => {
+          const activo = div.classList.toggle('activado');
+          localStorage.setItem('movivital_dia_' + i, activo);
+          actualizarContadorDias();
+        });
+
+        contenedor.appendChild(div);
+      });
+
+      document.getElementById('dias-activos').textContent = diasActivos;
+    }
+
+    function actualizarContadorDias() {
+      let contador = 0;
+      for (let i = 0; i < 7; i++) {
+        if (localStorage.getItem('movivital_dia_' + i) === 'true') {
+          contador++;
+        }
+      }
+      document.getElementById('dias-activos').textContent = contador;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      actualizarProgreso();
+      cargarDiasSemana();
+      actualizarContadorDias();
+    });
+
+    const mascotStages = [
+      { threshold: 0, stage: 1 },
+      { threshold: 3, stage: 2 },
+      { threshold: 6, stage: 3 },
+      { threshold: 10, stage: 4 }
+    ];
   </script>
 </body>
 </html>
