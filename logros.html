@@ -94,6 +94,26 @@
       color: #555;
       margin-top: 0.5rem;
     }
+
+    #felicitacion-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border: 3px solid #4a4aff;
+      border-radius: 12px;
+      padding: 2rem;
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      animation: fadeInScale 0.5s ease-out;
+    }
+
+    @keyframes fadeInScale {
+      from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+      to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -120,6 +140,10 @@
     <button class="btn" onclick="window.location.href='index.html'">Volver a la App</button>
   </div>
 
+  <div id="felicitacion-popup">
+    🎉 ¡Felicidades por alcanzar tu meta de 10 ejercicios! Tu mascota ha alcanzado su forma final.
+  </div>
+
   <script>
     const MAX_EXERCISES = 10;
 
@@ -129,6 +153,14 @@
       { threshold: 6, stage: 3 },
       { threshold: 10, stage: 4 }
     ];
+
+    function mostrarPopupFelicitacion() {
+      const popup = document.getElementById('felicitacion-popup');
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 4000);
+    }
 
     function actualizarProgreso() {
       let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
@@ -160,6 +192,10 @@
 
       const imgSrc = currentStage === 1 ? selectedMascot : `${prefijo}_stage${currentStage}.png`;
       document.getElementById('imagen-etapa-actual').src = imgSrc;
+
+      if (exerciseCount >= 10) {
+        mostrarPopupFelicitacion();
+      }
     }
 
     function agregarEjercicios() {
