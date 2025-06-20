@@ -173,8 +173,8 @@
     function mostrarMascotaActual() {
       let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
       const selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
-      const customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
-      const nombreVisible = customName.replace('.png', '');
+      const customName = localStorage.getItem('movivital_mascot_name') || '';
+      const nombreVisible = customName.trim() === '' ? 'Mascota' : customName;
 
       document.getElementById('nombre-mascota-principal').textContent = nombreVisible;
 
