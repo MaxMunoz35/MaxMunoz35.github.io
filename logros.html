@@ -146,14 +146,18 @@
       padding: 2rem;
       z-index: 1000;
       box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      animation: fadeInScale 0.5s ease-out;
       color: #3e2723;
       font-size: 1.2rem;
+      animation: fadeInScale 0.5s ease-out, fadeOut 0.5s ease-in 4.5s forwards;
     }
 
     @keyframes fadeInScale {
       from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: scale(0.8); }
     }
 
     @keyframes fadeIn {
@@ -193,7 +197,7 @@
       popup.style.display = 'block';
       setTimeout(() => {
         popup.style.display = 'none';
-      }, 4000);
+      }, 5000);
     }
 
     function agregarEjercicios() {
