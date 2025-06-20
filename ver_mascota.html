@@ -242,17 +242,11 @@
       const selectedMascot = localStorage.getItem('movivital_mascot');
       if (!selectedMascot) return;
       const baseName = selectedMascot.replace('.png', '');
-      const exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count')) || 0;
 
       document.getElementById('evo1').src = `${baseName}.png`;
       document.getElementById('evo2').src = `${baseName}_stage2.png`;
       document.getElementById('evo3').src = `${baseName}_stage3.png`;
       document.getElementById('evo4').src = `${baseName}_stage4.png`;
-
-      if (exerciseCount >= 10 && !localStorage.getItem('felicitacion_mostrada')) {
-        alert('🎉 ¡Felicidades por alcanzar tu meta de 10 ejercicios! Tu mascota ha alcanzado su forma final.');
-        localStorage.setItem('felicitacion_mostrada', 'true');
-      }
     }
 
     function irConTransicion(url) {
