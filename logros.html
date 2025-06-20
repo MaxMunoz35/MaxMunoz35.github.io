@@ -14,7 +14,6 @@
       color: #3e2723;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
-
       background-image: url('fondo.png');
       background-size: cover;
       background-position: center;
@@ -32,6 +31,7 @@
       padding: 1rem;
       font-size: 1.5rem;
       font-weight: bold;
+      text-align: center;
       animation: slideDown 0.8s ease-out;
     }
 
@@ -60,13 +60,7 @@
       font-weight: bold;
       color: #f4511e;
       animation: fadeIn 0.7s ease-in;
-    }
-
-    .progress-section {
-      margin: 2rem auto;
-      width: 90%;
-      max-width: 400px;
-      animation: fadeIn 1s ease-in-out;
+      text-align: center;
     }
 
     .barra-progreso {
@@ -112,7 +106,7 @@
       justify-content: center;
       gap: 10px;
       flex-wrap: wrap;
-      margin: 2rem 0;
+      margin-top: 1rem;
     }
 
     .dia {
@@ -171,6 +165,17 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 1.5rem;
+      margin: 1.5rem auto;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -181,7 +186,8 @@
     <div class="nombre-mascota" id="nombre-mascota"></div>
   </div>
 
-  <div class="progress-section">
+  <!-- Progreso en un recuadro -->
+  <div class="card">
     <div class="barra-progreso">
       <div class="barra-progreso-inner" id="progress-bar">0%</div>
     </div>
@@ -192,11 +198,17 @@
 
   <div id="felicitacion-popup">🎉 ¡Felicidades por alcanzar tu meta de 10 ejercicios! Tu mascota ha alcanzado su forma final.</div>
 
-  <h2>Días de la semana</h2>
-  <p class="counter-text">Días activos esta semana: <span id="dias-activos">0</span></p>
-  <div class="dias-semana" id="dias-semana"></div>
+  <!-- Días en un recuadro -->
+  <div class="card">
+    <h2>Días de la semana</h2>
+    <p class="counter-text">Días activos esta semana: <span id="dias-activos">0</span></p>
+    <div class="dias-semana" id="dias-semana"></div>
+  </div>
 
-  <button class="btn" onclick="window.location.href='index.html'">Volver a la App</button>
+  <!-- Botón centrado -->
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <button class="btn" onclick="window.location.href='index.html'">Volver a la App</button>
+  </div>
 
   <script>
     function mostrarPopupFelicitacion() {
