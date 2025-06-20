@@ -134,6 +134,23 @@
       margin-top: 0.5rem;
     }
 
+    #felicitacion-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff8e1;
+      border: 3px solid #ffa000;
+      border-radius: 12px;
+      padding: 2rem;
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      animation: fadeInScale 0.5s ease-out;
+      color: #3e2723;
+      font-size: 1.2rem;
+    }
+
     @keyframes fadeInScale {
       from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -158,7 +175,11 @@
       <div class="barra-progreso-inner" id="progress-bar">0%</div>
     </div>
     <p id="contador-ejercicios"></p>
+    <button class="btn" onclick="agregarEjercicios()">Agregar ejercicios</button>
+    <button class="btn" onclick="reiniciarProgreso()">Reiniciar Progreso</button>
   </div>
+
+  <div id="felicitacion-popup">🎉 ¡Felicidades por alcanzar tu meta de 10 ejercicios! Tu mascota ha alcanzado su forma final.</div>
 
   <h2>Días de la semana</h2>
   <p class="counter-text">Días activos esta semana: <span id="dias-activos">0</span></p>
@@ -167,6 +188,34 @@
   <button class="btn" onclick="window.location.href='index.html'">Volver a la App</button>
 
   <script>
+    function mostrarPopupFelicitacion() {
+      const popup = document.getElementById('felicitacion-popup');
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 4000);
+    }
+
+    function agregarEjercicios() {
+      const cantidad = prompt("¿Cuántos ejercicios realizaste?");
+      const numero = parseInt(cantidad, 10);
+      if (!isNaN(numero) && numero > 0) {
+        let actual = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
+        actual += numero;
+        localStorage.setItem('movivital_exercise_count', actual);
+        location.reload();
+      } else {
+        alert("Por favor, ingresa un número válido mayor que 0.");
+      }
+    }
+
+    function reiniciarProgreso() {
+      if (confirm("¿Estás seguro de que deseas reiniciar tu progreso?")) {
+        localStorage.setItem('movivital_exercise_count', '0');
+        location.reload();
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const mascota = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
       const nombre = localStorage.getItem('movivital_mascot_name') || '';
@@ -189,6 +238,8 @@
       barra.textContent = Math.round(porcentaje) + '%';
 
       document.getElementById('contador-ejercicios').textContent = `Ejercicios completados: ${ejercicios}`;
+
+      if (ejercicios >= 10) mostrarPopupFelicitacion();
 
       const dias = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
       const contenedor = document.getElementById('dias-semana');
