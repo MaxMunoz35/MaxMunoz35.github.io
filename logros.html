@@ -10,31 +10,56 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #fff8e1;
       color: #3e2723;
+      text-align: center;
+      transition: opacity 0.5s ease-in-out;
+      opacity: 0;
+    }
+
+    body.fade-in {
+      opacity: 1;
     }
 
     header {
       background-color: #ff7043;
       color: white;
       padding: 1rem;
-      text-align: center;
       font-size: 1.5rem;
       font-weight: bold;
+      animation: slideDown 0.8s ease-out;
     }
 
-    .container {
-      max-width: 800px;
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .mascota-container {
+      margin-top: 2rem;
+      animation: fadeInScale 0.7s ease-in-out;
+      max-width: 250px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .mascota-container img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .nombre-mascota {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #f4511e;
+      animation: fadeIn 0.7s ease-in;
+    }
+
+    .progress-section {
       margin: 2rem auto;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    h2 {
-      color: #bf360c;
-      margin-bottom: 1rem;
-    }
-
-    .progreso-section {
-      margin-bottom: 2rem;
+      width: 90%;
+      max-width: 400px;
+      animation: fadeIn 1s ease-in-out;
     }
 
     .barra-progreso {
@@ -43,9 +68,6 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-      margin: 0 auto;
-      width: 90%;
-      max-width: 400px;
     }
 
     .barra-progreso-inner {
@@ -53,23 +75,12 @@
       width: 0%;
       background-color: #ffa000;
       border-radius: 12px;
-      transition: width 0.5s ease-in-out;
       text-align: center;
       line-height: 25px;
       color: white;
       font-weight: bold;
       font-size: 0.9rem;
-    }
-
-    .etapa-actual {
-      margin: 2rem auto;
-      max-width: 250px;
-    }
-
-    .etapa-actual img {
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: width 0.5s ease-in-out;
     }
 
     .btn {
@@ -87,12 +98,6 @@
 
     .btn:hover {
       background-color: #bf360c;
-    }
-
-    .counter-text {
-      font-size: 0.95rem;
-      color: #5d4037;
-      margin-top: 0.5rem;
     }
 
     .dias-semana {
@@ -123,131 +128,69 @@
       color: white;
     }
 
-    #felicitacion-popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #fff8e1;
-      border: 3px solid #ffa000;
-      border-radius: 12px;
-      padding: 2rem;
-      z-index: 1000;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      animation: fadeInScale 0.5s ease-out;
-      color: #3e2723;
-      font-size: 1.2rem;
+    .counter-text {
+      font-size: 0.95rem;
+      color: #5d4037;
+      margin-top: 0.5rem;
     }
 
     @keyframes fadeInScale {
-      from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-      to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <header>Tu Progreso MoviVital</header>
+  <header>Mis Logros - MoviVital</header>
 
-  <div class="container">
-    <h2 id="nombre-mascota-logros">Mascota</h2>
-
-    <div class="progreso-section">
-      <div class="barra-progreso">
-        <div class="barra-progreso-inner" id="progress-bar-inner">0%</div>
-      </div>
-      <p class="counter-text">
-        Ejercicios completados: <span id="exercise-count">0</span>
-      </p>
-      <button class="btn" onclick="agregarEjercicios()">Agregar ejercicios manualmente</button>
-      <button class="btn" onclick="reiniciarProgreso()">Reiniciar Progreso</button>
-    </div>
-
-    <div class="etapa-actual">
-      <img id="imagen-etapa-actual" src="" alt="Mascota actual" />
-    </div>
-
-    <h2>Días de la semana</h2>
-    <p class="counter-text">Días activos esta semana: <span id="dias-activos">0</span></p>
-    <div class="dias-semana" id="dias-semana"></div>
-
-    <button class="btn" onclick="window.location.href='index.html'">Volver a la App</button>
+  <div class="mascota-container">
+    <img id="mascota-img" src="" alt="Mascota actual" />
+    <div class="nombre-mascota" id="nombre-mascota"></div>
   </div>
 
-  <div id="felicitacion-popup">
-    🎉 ¡Felicidades por alcanzar tu meta de 10 ejercicios! Tu mascota ha alcanzado su forma final.
+  <div class="progress-section">
+    <div class="barra-progreso">
+      <div class="barra-progreso-inner" id="progress-bar">0%</div>
+    </div>
+    <p id="contador-ejercicios"></p>
   </div>
+
+  <h2>Días de la semana</h2>
+  <p class="counter-text">Días activos esta semana: <span id="dias-activos">0</span></p>
+  <div class="dias-semana" id="dias-semana"></div>
+
+  <button class="btn" onclick="window.location.href='index.html'">Volver a la App</button>
 
   <script>
-    const MAX_EXERCISES = 10;
-    const dias = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    document.addEventListener('DOMContentLoaded', () => {
+      const mascota = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
+      const nombre = localStorage.getItem('movivital_mascot_name') || '';
+      const ejercicios = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
+      const baseName = mascota.replace('.png', '');
+      let etapa = 1;
+      if (ejercicios >= 10) etapa = 4;
+      else if (ejercicios >= 6) etapa = 3;
+      else if (ejercicios >= 3) etapa = 2;
 
-    function mostrarPopupFelicitacion() {
-      const popup = document.getElementById('felicitacion-popup');
-      popup.style.display = 'block';
-      setTimeout(() => {
-        popup.style.display = 'none';
-      }, 4000);
-    }
+      const imagenSrc = etapa === 1 ? mascota : `${baseName}_stage${etapa}.png`;
+      document.getElementById('mascota-img').src = imagenSrc;
 
-    function actualizarProgreso() {
-      let exerciseCount = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-      if (isNaN(exerciseCount)) exerciseCount = 0;
+      const nombreFinal = nombre.trim() === '' ? 'Mascota' : nombre;
+      document.getElementById('nombre-mascota').textContent = `Progreso de ${nombreFinal}`;
 
-      const selectedMascot = localStorage.getItem('movivital_mascot') || 'mascota_c.png';
-      const customName = localStorage.getItem('movivital_mascot_name') || selectedMascot;
-      const nombreVisible = customName.replace('.png', '');
+      const porcentaje = Math.min((ejercicios / 10) * 100, 100);
+      const barra = document.getElementById('progress-bar');
+      barra.style.width = porcentaje + '%';
+      barra.textContent = Math.round(porcentaje) + '%';
 
-      document.getElementById('nombre-mascota-logros').textContent = Progreso de ${nombreVisible};
-      document.getElementById('exercise-count').textContent = exerciseCount;
+      document.getElementById('contador-ejercicios').textContent = `Ejercicios completados: ${ejercicios}`;
 
-      let percentage = (exerciseCount / MAX_EXERCISES) * 100;
-      if (percentage > 100) percentage = 100;
-
-      const progressBar = document.getElementById('progress-bar-inner');
-      progressBar.style.width = percentage + '%';
-      progressBar.textContent = Math.round(percentage) + '%';
-
-      const prefijo = selectedMascot.replace('.png', '');
-      let currentStage = 1;
-
-      for (let i = mascotStages.length - 1; i >= 0; i--) {
-        if (exerciseCount >= mascotStages[i].threshold) {
-          currentStage = mascotStages[i].stage;
-          break;
-        }
-      }
-
-      const imgSrc = currentStage === 1 ? selectedMascot : ${prefijo}_stage${currentStage}.png;
-      document.getElementById('imagen-etapa-actual').src = imgSrc;
-
-      if (exerciseCount >= 10) {
-        mostrarPopupFelicitacion();
-      }
-    }
-
-    function agregarEjercicios() {
-      const cantidad = prompt("¿Cuántos ejercicios realizaste?");
-      const numero = parseInt(cantidad, 10);
-
-      if (!isNaN(numero) && numero > 0) {
-        let actual = parseInt(localStorage.getItem('movivital_exercise_count') || '0', 10);
-        actual += numero;
-        localStorage.setItem('movivital_exercise_count', actual);
-        actualizarProgreso();
-      } else {
-        alert("Por favor, ingresa un número válido mayor que 0.");
-      }
-    }
-
-    function reiniciarProgreso() {
-      if (confirm("¿Estás seguro de que deseas reiniciar tu progreso?")) {
-        localStorage.setItem('movivital_exercise_count', '0');
-        actualizarProgreso();
-      }
-    }
-
-    function cargarDiasSemana() {
+      const dias = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
       const contenedor = document.getElementById('dias-semana');
       let diasActivos = 0;
 
@@ -271,7 +214,8 @@
       });
 
       document.getElementById('dias-activos').textContent = diasActivos;
-    }
+      requestAnimationFrame(() => document.body.classList.add("fade-in"));
+    });
 
     function actualizarContadorDias() {
       let contador = 0;
@@ -282,19 +226,6 @@
       }
       document.getElementById('dias-activos').textContent = contador;
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      actualizarProgreso();
-      cargarDiasSemana();
-      actualizarContadorDias();
-    });
-
-    const mascotStages = [
-      { threshold: 0, stage: 1 },
-      { threshold: 3, stage: 2 },
-      { threshold: 6, stage: 3 },
-      { threshold: 10, stage: 4 }
-    ];
   </script>
 </body>
 </html>
